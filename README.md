@@ -1,5 +1,5 @@
 # Tên đề tài
-- Ứng dụng nhận diện các loài hoa
+- Ứng dụng web app nhận diện các loài hoa
 
 # Link image flowers
 - https://www.kaggle.com/datasets/alxmamaev/flowers-recognition
