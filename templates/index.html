@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Classification</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+
+<body>
+    <h1>Flower Classification</h1>
+    <form action="/classify" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required onchange="previewImage(this)">
+        <button type="submit">Classify</button>
+    </form>
+    <div id="result">
+        <p id="flower-name"></p>
+        <img id="predicted-image" alt="Predicted Flower">
+    </div>
+    <script>
+        function previewImage(input) {
+            const flowerNameElement = document.getElementById('flower-name');
+            const predictedImageElement = document.getElementById('predicted-image');
+
+            const file = input.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    // Display the uploaded image
+                    predictedImageElement.src = e.target.result;
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                // Reset the image when no file is selected
+                predictedImageElement.src = '';
+            }
+        }
+
+        document.querySelector('form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const response = await fetch('/classify', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            const flowerNameElement = document.getElementById('flower-name');
+            const predictedImageElement = document.getElementById('predicted-image');
+
+            flowerNameElement.innerText = `Predicted Flower: ${result.flower_name}`;
+        });
+    </script>
+</body>
+
+</html>
